@@ -1,0 +1,6 @@
+Libraries and SDKs used for this app:
+
+- @mui/material (and it's required dependencies)
+- @mui/icons-material (and it's required dependencies)
+- axios (and it's required dependencies)
+- moment (and it's required dependencies)

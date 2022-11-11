@@ -12,10 +12,12 @@ const Scrollers = () => {
         error
     } = usePosts(pageNumber)
 
+
     const observer = useRef()
     const lastPostElementRef = useCallback(node => {
-        if (loading) return
+        console.log(node)
         if (observer.current) observer.current.disconnect()
+        if (loading) return
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting) {
                 setPageNumber(prevPageNumber => prevPageNumber + 1)
@@ -28,20 +30,20 @@ const Scrollers = () => {
     {posts.map((post, index) => {
         if (posts.length === index + 1) {
             return (
-                <div ref={lastPostElementRef} key={index}>
+                <div ref={lastPostElementRef} key={posts[index][0].date}>
                     <HScroller data={post} />
                 </div>
             )
         } else {
             return (
-                <div key={index}>
+                <div key={posts[index][0].date}>
                     <HScroller data={post} />
                 </div>
             )
         }
     })}
     {loading && 
-        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
             <CircularProgress />
         </Box>
     }

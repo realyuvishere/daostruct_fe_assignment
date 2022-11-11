@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {ImageList, ImageListItem, ImageListItemBar, Box, Card, CardActionArea, CardContent, CardMedia, Typography} from '@mui/material'
 import ItemFocus from './ItemFocus'
+import TouchRipple from '@mui/material/ButtonBase/TouchRipple'
+import {PlayCircle as PlayCircleIcon} from '@mui/icons-material'
 
 const CardListItem = (data) => {
   const [open, setOpen] = React.useState(false)
@@ -16,39 +18,49 @@ const CardListItem = (data) => {
           setDelayOpen(false)
       }, 1000)
   }
+  const rippleRef = React.useRef(null)
+  const onRippleStart = (e) => {
+    rippleRef.current.start(e);
+  }
+  const onRippleStop = (e) => {
+    rippleRef.current.stop(e);
+  }
+  
   return (
     <>
-    <Card>
-      <CardActionArea onClick={handleClickOpen}>
-        <CardMedia
-          component="img"
-          image={data.url}
+    <ImageListItem sx={{width: 'clamp(200px, 20vw, 300px)', cursor: 'pointer', justifyContent: 'center', alignItems: 'center'}} onClick={handleClickOpen}>
+      <TouchRipple ref={rippleRef} center={false} />
+      {data.thumbnail_url && <PlayCircleIcon sx={{position: 'absolute'}} />}
+      {data.media_type === 'video' && !data.thumbnail_url ?
+        <PlayCircleIcon sx={{width: '80%', height: 'auto'}} color="primary" />
+      :
+        <img
+          src={`${data.thumbnail_url ?? data.url}`}
+          srcSet={`${data.thumbnail_url ?? data.url}`}
           alt={data.title}
+          loading="lazy"
+          onMouseDown={onRippleStart} 
+          onMouseUp={onRippleStop}
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {data.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {data.copyright ?? 'NASA'}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+      }
+      <ImageListItemBar
+        title={data.title}
+        subtitle={data.copyright ?? 'NASA'}
+      />
+    </ImageListItem>
     {delayOpen && <ItemFocus {...data} open={open} handleClose={handleClose} />}
     </>
   )
 }
 
 const HScroller = ({data}) => {
+  
   return (
     <>
       <Box sx={{padding: '1rem'}}>
           <ImageList cols={7}>
-              {data.map((item) => (
-                  <ImageListItem key={item.url} sx={{width: 'clamp(200px, 20vw, 300px)'}}>
-                    <CardListItem {...item} />
-                  </ImageListItem>
+              {data.map((item) => (  
+                <CardListItem {...item} key={item.url} />
               ))}
           </ImageList>
       </Box>

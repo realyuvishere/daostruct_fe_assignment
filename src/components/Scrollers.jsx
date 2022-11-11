@@ -15,7 +15,6 @@ const Scrollers = () => {
 
     const observer = useRef()
     const lastPostElementRef = useCallback(node => {
-        console.log(node)
         if (observer.current) observer.current.disconnect()
         if (loading) return
         observer.current = new IntersectionObserver(entries => {
@@ -43,7 +42,7 @@ const Scrollers = () => {
         }
     })}
     {loading && 
-        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
+        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', padding: '1.5rem 0' }}>
             <CircularProgress />
         </Box>
     }

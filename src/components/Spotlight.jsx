@@ -19,16 +19,15 @@ const Spotlight = () => {
             setDelayOpen(false)
         }, 1000)
     }
+
     useEffect(() => {
-        return () => {
-            axios()
-            .then((res) => {
-                setData({...res.data})
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        }
+        return () => axios()
+        .then((res) => {
+            setData({...res.data})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }, [])
     return (
         <>

@@ -21,7 +21,7 @@ const Spotlight = () => {
     }
 
     useEffect(() => {
-        return () => axios()
+        return () => axios.get()
         .then((res) => {
             setData({...res.data})
         })

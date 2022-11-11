@@ -20,8 +20,10 @@ const Spotlight = () => {
         }, 1000)
     }
 
+    console.log(data)
+
     useEffect(() => {
-        return () => axios.get()
+        axios.get()
         .then((res) => {
             setData({...res.data})
         })
